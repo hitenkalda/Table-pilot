@@ -130,7 +130,7 @@ export default async function handler(req: Request): Promise<Response> {
     ];
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 30000);
+    const timeout = setTimeout(() => controller.abort(), 8000);
     let providerRes: Response;
     try {
       providerRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {

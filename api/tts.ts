@@ -34,7 +34,7 @@ export default async function handler(req: Request): Promise<Response> {
     const modelId = process.env.ELEVENLABS_MODEL_ID || "eleven_flash_v2_5";
 
     const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 15000);
+    const timeout = setTimeout(() => controller.abort(), 8000);
     let providerRes: Response;
     try {
       providerRes = await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${voiceId}`, {
