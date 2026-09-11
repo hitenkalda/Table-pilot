@@ -141,7 +141,7 @@ function chatProxy(env: Record<string, string>): Plugin {
                   },
                   signal: controller.signal,
                   body: JSON.stringify({
-                    model: env.GROQ_MODEL || "openai/gpt-oss-120b",
+                    model: env.GROQ_MODEL || "llama-3.3-70b-versatile",
                     max_tokens: 500,
                     temperature: 0.4,
                     tools,
