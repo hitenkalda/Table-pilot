@@ -1,4 +1,4 @@
-import type { CartAction, ChatMessage, ChatResponse, Dish, Restaurant } from "../types";
+import type { ChatMessage, ChatResponse, Dish, Restaurant } from "../types";
 import { deterministicAnswer, MAX_HISTORY_TURNS, MAX_QUESTION_CHARS } from "./deterministicChat";
 import { deterministicAgentAnswer } from "./agentChat";
 

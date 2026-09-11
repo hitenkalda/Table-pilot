@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import type { ChatMessage } from "../types";
 
 const memoryFallback = new Map<string, string>();

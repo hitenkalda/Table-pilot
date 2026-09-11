@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import type { ChatMessage, Dish, Restaurant } from "../types";
-import { askQuestion, askAgent, type CartContextItem } from "../lib/chatClient";
+import { askQuestion, askAgent } from "../lib/chatClient";
 import { speak, speechRecognitionSupported, speechSynthesisSupported, startDictation, stopSpeaking } from "../lib/voice";
 import { MAX_QUESTION_CHARS } from "../lib/deterministicChat";
 import { MAX_QUESTION_CHARS as MAX_AGENT_QUESTION_CHARS } from "../lib/agentChat";
-import { useCart, addToCart, removeAllByDishId, setQuantityAll, clearCart } from "../lib/cart";
+import { useCart, addToCart, removeAllByDishId, setQuantityAll } from "../lib/cart";
 import { useChatMessages } from "../lib/chatStore";
 
 type Props = {
@@ -19,7 +19,7 @@ type Props = {
 
 /** Voice-capable chat: dish-scoped AI or the restaurant-wide AI waiter.
  *  Persists messages to localStorage so they survive page navigation. */
-export function ChatPanel({ restaurant, dish = null, initialMessages = [], compact = false }: Props) {
+export function ChatPanel({ restaurant, dish = null, compact = false }: Props) {
   const { table } = useParams();
   const tableNumber = table ? Number(table) : null;
   const navigate = useNavigate();
@@ -111,7 +111,7 @@ export function ChatPanel({ restaurant, dish = null, initialMessages = [], compa
     } catch {
       // keep fallback text
     }
-    const finalMsgs = [...history, { role: "assistant", content: answer }];
+    const finalMsgs: ChatMessage[] = [...history, { role: "assistant", content: answer }];
     saveMessages(finalMsgs);
     lastModeRef.current = mode;
     lastSourcesRef.current = sources;
