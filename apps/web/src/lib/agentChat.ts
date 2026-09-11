@@ -115,6 +115,14 @@ export function deterministicAgentAnswer(
     }
   }
 
+  // ---- Special instructions ----
+  else if (/\b(less spicy|no onions|no onion|extra sauce|no garlic|no dairy|no egg|birthday|anniversary|no nuts|gluten.?free|no seafood|make it|keep it|please add|special request|note:|instruction)\b/.test(q)) {
+    // Extract the instruction from the message
+    const instruction = question.replace(/^(can you |please |i want |i'd like |could you )/i, "").trim();
+    actions = [{ type: "set_instruction", note: instruction }];
+    answer = `Got it — I've noted "${instruction}" for your order. It'll show up at checkout.`;
+  }
+
   // ---- Allergen / nut / ingredient questions ----
   else if (/\b(allerg|allergen|nut|peanut|gluten|dairy|egg|milk|soy|sesame|fish|shellfish|tree.?nut|contain|contains|safe|cross.?contact)\b/.test(q)) {
     const dish = findDish(restaurant, q);

@@ -6,12 +6,14 @@ type CartState = {
   restaurantSlug: string;
   tableNumber: number | null;
   items: CartItem[];
+  customerNote: string;
 };
 
 const store = createLocalStore<CartState>("dishexplain-cart", {
   restaurantSlug: "",
   tableNumber: null,
   items: [],
+  customerNote: "",
 });
 
 export const cartStore = store;
@@ -88,10 +90,6 @@ export function setTableNumber(tableNumber: number | null): void {
   store.update((s) => ({ ...s, tableNumber }));
 }
 
-export function clearCart(): void {
-  store.update((s) => ({ ...s, items: [] }));
-}
-
 export function cartCount(items: CartItem[]): number {
   return items.reduce((sum, i) => sum + i.quantity, 0);
 }
@@ -101,4 +99,12 @@ export function cartSubtotal(items: CartItem[], dishes: Dish[]): number {
     const dish = dishes.find((d) => d.id === item.dishId);
     return dish ? sum + dish.price * item.quantity : sum;
   }, 0);
+}
+
+export function setCustomerNote(note: string): void {
+  store.update((s) => ({ ...s, customerNote: note }));
+}
+
+export function clearCart(): void {
+  store.update((s) => ({ ...s, items: [], customerNote: "" }));
 }

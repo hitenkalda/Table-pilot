@@ -90,7 +90,8 @@ export type CartAction =
   | { type: "add_to_cart"; dishId: string; quantity: number }
   | { type: "remove_from_cart"; dishId: string }
   | { type: "update_cart_item"; dishId: string; quantity: number }
-  | { type: "navigate_to_checkout" };
+  | { type: "navigate_to_checkout" }
+  | { type: "set_instruction"; note: string };
 
 export type ChatResponse = {
   answer: string;

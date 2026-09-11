@@ -5,7 +5,7 @@ import { askQuestion, askAgent } from "../lib/chatClient";
 import { speak, speechRecognitionSupported, speechSynthesisSupported, startDictation, stopSpeaking } from "../lib/voice";
 import { MAX_QUESTION_CHARS } from "../lib/deterministicChat";
 import { MAX_QUESTION_CHARS as MAX_AGENT_QUESTION_CHARS } from "../lib/agentChat";
-import { useCart, addToCart, removeAllByDishId, setQuantityAll } from "../lib/cart";
+import { useCart, addToCart, removeAllByDishId, setQuantityAll, setCustomerNote } from "../lib/cart";
 import { useChatMessages } from "../lib/chatStore";
 
 type Props = {
@@ -105,6 +105,8 @@ export function ChatPanel({ restaurant, dish = null, compact = false }: Props) {
             setBusy(false);
             navigate(`${base}/checkout`);
             return;
+          } else if (a.type === "set_instruction" && a.note) {
+            setCustomerNote(a.note);
           }
         }
       }

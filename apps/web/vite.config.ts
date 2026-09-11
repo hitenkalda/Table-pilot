@@ -10,7 +10,7 @@ RULES:
 - One short follow-up is fine. Don't pepper with questions.
 - Only use facts from the menu data below. Never invent anything.
 
-You have cart tools. When the guest wants to order something, use the tool. Match dish names exactly from the menu. When they say "add" or "I'll take" or "give me", add_to_cart. When they say "remove" or "delete", remove_from_cart. When they say "change X to Y" or "make it Y", update_cart_item. When they ask "what's in my cart" or "my order", summarize cart contents without a tool call.`;
+You have cart tools. When the guest wants to order something, use the tool. Match dish names exactly from the menu. When they say "add" or "I'll take" or "give me", add_to_cart. When they say "remove" or "delete", remove_from_cart. When they say "change X to Y" or "make it Y", update_cart_item. When they ask "what's in my cart" or "my order", summarize cart contents without a tool call. When they say "pay", "checkout", "place order", "bill", "done", or "ready", use navigate_to_checkout. When the guest mentions a preference like "less spicy", "no onions", "extra sauce", "birthday", "allergic to X", or any special instruction, use set_instruction to save it. Combine multiple instructions into one note.`;
 
 const SAFETY_NOTE =
   "Allergy note: always confirm with restaurant staff. Cross-contact is possible even when an allergen is not listed.";
@@ -125,6 +125,20 @@ function chatProxy(env: Record<string, string>): Plugin {
                   parameters: { type: "object", properties: {} },
                 },
               },
+              {
+                type: "function" as const,
+                function: {
+                  name: "set_instruction",
+                  description: "Save a special instruction or preference from the guest (e.g. less spicy, no onions, birthday)",
+                  parameters: {
+                    type: "object",
+                    properties: {
+                      note: { type: "string", description: "The instruction text" },
+                    },
+                    required: ["note"],
+                  },
+                },
+              },
             ];
 
             const controller = new AbortController();
@@ -174,6 +188,7 @@ function chatProxy(env: Record<string, string>): Plugin {
                 | { type: "remove_from_cart"; dishId: string }
                 | { type: "update_cart_item"; dishId: string; quantity: number }
                 | { type: "navigate_to_checkout" }
+                | { type: "set_instruction"; note: string }
               > = [];
               for (const tc of toolCalls) {
                 try {
@@ -198,6 +213,8 @@ function chatProxy(env: Record<string, string>): Plugin {
                     });
                   } else if (tc.function.name === "navigate_to_checkout") {
                     actions.push({ type: "navigate_to_checkout" });
+                  } else if (tc.function.name === "set_instruction" && args.note) {
+                    actions.push({ type: "set_instruction", note: args.note });
                   }
                 } catch {
                   // skip malformed tool call

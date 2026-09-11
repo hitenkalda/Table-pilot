@@ -18,7 +18,7 @@ export function CheckoutPage() {
   );
   const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>("CASH");
   const [tableChoice, setTableChoice] = useState<number | null>(cart.tableNumber);
-  const [customerNote, setCustomerNote] = useState("");
+  const [customerNote, setCustomerNote] = useState(cart.customerNote || "");
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
 
