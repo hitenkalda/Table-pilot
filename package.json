@@ -4,7 +4,7 @@
   "version": "0.1.0",
   "scripts": {
     "dev": "npm --prefix apps/web run dev",
-    "build": "npm --prefix apps/web run build",
+    "build": "cd apps/web && npm ci && npm run build",
     "test": "npm --prefix apps/web test",
     "typecheck": "npm --prefix apps/web run typecheck"
   },
