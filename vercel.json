@@ -3,6 +3,14 @@
   "buildCommand": "cd apps/web && npm ci && npm run build",
   "outputDirectory": "apps/web/dist",
   "framework": null,
+  "functions": {
+    "api/chat.ts": {
+      "maxDuration": 10
+    },
+    "api/tts.ts": {
+      "maxDuration": 10
+    }
+  },
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
   ]
